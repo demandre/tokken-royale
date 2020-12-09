@@ -5,10 +5,24 @@ import "./ElectionFactory.sol";
 
 contract ElectionHelper is ElectionFactory {
     function startElection(uint electionId) external onlyOwnerOf(electionId) {
+        require(elections[electionId].isRunning == false);
         elections[electionId].isRunning = true;
+        Election storage election = elections[electionId];
+        for (uint i = 0; i < election.participantIds.length; i++) {
+            Vote memory vote = Vote(election.participantIds[i], 0, 0, 0);
+            for (uint j = 0; j < election.participantIds.length; j++) {
+                if (i != j) {
+                    vote.participantTwo = election.participantIds[j];
+                    uint id = elections[electionId].votesIds.length;
+                    elections[electionId].votesIds.push(id);
+                    elections[electionId].votes[id] = vote;
+                }
+            }
+        }
     }
 
     function stopElection(uint electionId) external onlyOwnerOf(electionId) {
+        require(elections[electionId].isRunning == true);
         _stopElection(electionId);
     }
 
@@ -18,7 +32,7 @@ contract ElectionHelper is ElectionFactory {
         elections[electionId].participantIds.push(id);
         elections[electionId].participants[id] = p;
 
-    elections[electionId].addressToParticipant[msg.sender] = id;
+        elections[electionId].addressToParticipant[msg.sender] = id;
     }
 
     function validateParticipant(uint electionId, address participantAddress) external onlyOwnerOf(electionId) {
@@ -34,7 +48,14 @@ contract ElectionHelper is ElectionFactory {
         Election storage election = elections[electionId];
         // TODO: Results validation
         for (uint i = 0; i < results.length; i++) {
-            //election.votes[results[i]]++;
+            for (uint j = 0; j < election.votesIds.length; j++) {
+                uint voteId = election.votesIds[j];
+                if (results[i].winnerId == election.votes[voteId].participantOne && results[i].loserId == election.votes[voteId].participantTwo) {
+                    election.votes[voteId].countParticipantOne++;
+                } else if (results[i].winnerId == election.votes[voteId].participantTwo && results[i].loserId == election.votes[voteId].participantOne) {
+                    election.votes[voteId].countParticipantTwo++;
+                }
+            }
         }
         election.voters[msg.sender].vote = true;
     }

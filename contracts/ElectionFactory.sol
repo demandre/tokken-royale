@@ -20,8 +20,10 @@ contract ElectionFactory is Ownable {
     }
 
     struct Vote {
-        Fight fight;
-        uint count;
+        uint participantOne;
+        uint participantTwo;
+        uint countParticipantOne;
+        uint countParticipantTwo;
     }
 
     struct VoterStatus {
@@ -64,6 +66,7 @@ contract ElectionFactory is Ownable {
             Election(
                 _title,
                 false,
+                new uint[](0),
                 new uint[](0)
             )
         ) - 1;
