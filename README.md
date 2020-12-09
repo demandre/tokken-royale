@@ -25,11 +25,14 @@ npm run serve
 ```
 
 ## Local Metamask
-RPC custom
 
-### Name of the network
+### Install RPC custom
+#### Name of the network
 LocalTruffle
-### New URL of RPC
+#### New URL of RPC
 http://127.0.0.1:9545/
-### ID of the chain
-???
+#### ID of the chain
+Type anything, and on submit it will show you the good one.
+
+### Switch account
+In the up right corner, click on your account and select import account. Then use a private key generated in the first console in **Local Project** step.
