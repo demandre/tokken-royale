@@ -1,5 +1,9 @@
 # Tokken Royale
 
+````shell script
+npm install -g truffle
+````
+
 ## Install modules
 ```shell script
 npm install
