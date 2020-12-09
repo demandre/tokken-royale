@@ -19,6 +19,11 @@ contract ElectionFactory is Ownable {
         uint loserId;
     }
 
+    struct Vote {
+        Fight fight;
+        uint count;
+    }
+
     struct VoterStatus {
         bool canVote;
         bool vote;
@@ -29,7 +34,8 @@ contract ElectionFactory is Ownable {
         bool isRunning;
         uint[] participantIds;
         mapping(uint => Participant) participants;
-        mapping(uint => uint) votes;
+        uint[] votesIds;
+        mapping(uint => Vote) votes;
         mapping(address => VoterStatus) voters;
         mapping(address => uint) addressToParticipant;
     }
