@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
 import "./Ownable.sol";
@@ -27,8 +27,9 @@ contract ElectionFactory is Ownable {
     struct Election {
         string title;
         bool isRunning;
-        Participant[] participants;
-        mapping(Fight => uint) votes;
+        uint[] participantIds;
+        mapping(uint => Participant) participants;
+        mapping(uint => uint) votes;
         mapping(address => VoterStatus) voters;
         mapping(address => uint) addressToParticipant;
     }
@@ -52,8 +53,14 @@ contract ElectionFactory is Ownable {
         _;
     }
 
-    function _createElection(string _title) internal {
-        uint id = elections.push(Election(_title, false)) - 1;
+    function _createElection(string memory _title) internal {
+        uint id = elections.push(
+            Election(
+                _title,
+                false,
+                new uint[](0)
+            )
+        ) - 1;
         electionToAddress[id] = msg.sender;
     }
 
