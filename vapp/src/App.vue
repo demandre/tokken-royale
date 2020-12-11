@@ -1,6 +1,7 @@
 <template>
-  <div id="app" v-if="isDrizzleInitialized">
+  <div class="ui container" id="app" v-if="isDrizzleInitialized">
     <ElectionBrowser v-bind:elections="elections" />
+    <ElectionSubmitter v-bind:elections="elections" />
   </div>
 
   <div v-else class="ui active dimmer">
@@ -10,13 +11,15 @@
 
 <script>
   import ElectionBrowser from './ElectionBrowser'
+  import ElectionSubmitter from './ElectionSubmitter'
   import { mapGetters } from 'vuex'
 
   export default {
     name: 'app',
 
     components: {
-      ElectionBrowser
+      ElectionBrowser,
+      ElectionSubmitter
     },
 
     computed: {
