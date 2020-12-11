@@ -1,7 +1,7 @@
 <template>
     <div v-if="isDrizzleInitialized" class="ui container">
-        <h2 class="ui huge header">SUBMIT NEW ELECTION</h2>
-        <form class="ui form">
+        <h2 class="ui huge header block">SUBMIT NEW ELECTION</h2>
+        <form class="ui form container">
             <div class="field">
                 <label>Election title</label>
                 <input type="text" name="election-title" placeholder="Election title">
