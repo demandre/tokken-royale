@@ -17,10 +17,10 @@ Vue.use(drizzleVuePlugin, { store, drizzleOptions })
 // Routers
 Vue.use(VueRouter);
 import home from './routes/home'
-import ElectionSubmitter from './components/ElectionSubmitter'
+import election from './routes/election'
 const routes = [
   { name: 'home', path:'/', component: home },
-  { name: 'election', path:'/election', component: ElectionSubmitter },
+  { name: 'election', path:'/election', component: election },
 ];
 const router = new VueRouter({
   routes // short for `routes: routes`

@@ -30,6 +30,7 @@
           0: {
             title: "Bob l'éponge et ses amis 1",
             previewPicture: "https://upload.wikimedia.org/wikipedia/fr/b/b8/Bob_l%27%C3%A9ponge_-_Logo.png",
+            isOpen: true,
             participants: {
               0: {
                 name: "Bob l'éponge",
@@ -52,6 +53,7 @@
           1: {
             title: "Bob l'éponge et ses amis 2",
             previewPicture: "https://upload.wikimedia.org/wikipedia/fr/b/b8/Bob_l%27%C3%A9ponge_-_Logo.png",
+            isOpen: false,
             participants: {
               0: {
                 name: "Bob l'éponge",
@@ -74,6 +76,7 @@
           2: {
             title: "Bob l'éponge et ses amis 3",
             previewPicture: "https://upload.wikimedia.org/wikipedia/fr/b/b8/Bob_l%27%C3%A9ponge_-_Logo.png",
+            isOpen: true,
             participants: {
               0: {
                 name: "Bob l'éponge",
@@ -96,6 +99,7 @@
           3: {
             title: "Bob l'éponge et ses amis 4",
             previewPicture: "https://upload.wikimedia.org/wikipedia/fr/b/b8/Bob_l%27%C3%A9ponge_-_Logo.png",
+            isOpen: true,
             participants: {
               0: {
                 name: "Bob l'éponge",
