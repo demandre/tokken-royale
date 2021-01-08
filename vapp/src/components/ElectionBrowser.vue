@@ -2,7 +2,9 @@
     <div v-if="isDrizzleInitialized" class="ui container">
         <h2 class="ui huge header block">ELECTIONS</h2>
         <div class="ui grid doubling stackable center container">
-           <div class="four wide column" v-for="election in this.elections">
+           <div class="four wide column"
+                v-for="(election,index) in this.elections"
+                v-bind:key="index">
                <router-link :to="{ name: 'election', params: { election: election }}">
                    <a class="ui card shadow">
                        <img class="ui image" v-bind:src="election.previewPicture" v-bind:alt="election.title">
