@@ -1,6 +1,6 @@
 <template>
   <div class="ui container" v-if="isDrizzleInitialized">
-    test
+    <FightVoter v-bind:election="election" />
   </div>
 
   <div v-else class="ui active dimmer">
@@ -10,11 +10,13 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import FightVoter from '../components/FightVoter'
 
   export default {
     name: 'election',
 
     components: {
+      FightVoter
     },
 
     computed: {
