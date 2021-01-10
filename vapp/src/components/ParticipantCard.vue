@@ -27,7 +27,8 @@
     export default {
         name: 'ParticipantCard',
         props: {
-            participant: Object
+            participant: Object,
+            index: String
         },
 
         computed: {

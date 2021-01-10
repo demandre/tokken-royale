@@ -6,7 +6,7 @@
                  v-for="(participant, index) in this.election.participants"
                  v-bind:key="index"
                  :ref="`card_${index}`">
-                <ParticipantCard v-bind:participant="participant"/>
+                <ParticipantCard v-bind:participant="participant" v-bind:index="index"/>
             </div>
         </div>
     </div>
