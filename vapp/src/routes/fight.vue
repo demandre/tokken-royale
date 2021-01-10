@@ -1,10 +1,6 @@
 <template>
   <div class="ui container" v-if="isDrizzleInitialized">
-    <ElectionParticipants v-bind:election="election" />
-    <br/>
-    <FightLauncher v-bind:election="election" />
-    <br/>
-    <ParticipantSubmitter v-bind:election="election" />
+    test
   </div>
 
   <div v-else class="ui active dimmer">
@@ -14,17 +10,11 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import ElectionParticipants from "../components/ElectionParticipants";
-  import ParticipantSubmitter from "../components/ParticipantSubmitter";
-  import FightLauncher from "../components/FightLauncher";
 
   export default {
     name: 'election',
 
     components: {
-      FightLauncher,
-      ElectionParticipants,
-      ParticipantSubmitter
     },
 
     computed: {
