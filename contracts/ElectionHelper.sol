@@ -44,19 +44,51 @@ contract ElectionHelper is ElectionFactory {
         elections[electionId].voters[voterAddress] = VoterStatus(true, false);
     }
 
+    function addParticipant(uint electionId, address participantAddress, string calldata firstName, string calldata lastName, uint age, string calldata imageUrl) external {
+        elections[electionId].participants[uint256(participantAddress)] = Participant(firstName, lastName, age, imageUrl, false, false);
+    }
+
+    function addElection(string calldata title) external {
+        _createElection(title);
+    }
+
     function vote(uint electionId, Fight[] calldata results) external onlyVoterOf(electionId) hasNotVoted(electionId) {
         Election storage election = elections[electionId];
-        // TODO: Results validation
+
+        Fight[] memory alreadyDone = new Fight[](results.length);
         for (uint i = 0; i < results.length; i++) {
-            for (uint j = 0; j < election.votesIds.length; j++) {
-                uint voteId = election.votesIds[j];
-                if (results[i].winnerId == election.votes[voteId].participantOne && results[i].loserId == election.votes[voteId].participantTwo) {
-                    election.votes[voteId].countParticipantOne++;
-                } else if (results[i].winnerId == election.votes[voteId].participantTwo && results[i].loserId == election.votes[voteId].participantOne) {
-                    election.votes[voteId].countParticipantTwo++;
+            // Vérifier si les candidats si candidats existent && si le fight a déjà été effectué pour ce vote
+            if(election.participants[results[i].loserId].active && election.participants[results[i].winnerId].active && !_checkFightPair(alreadyDone, results[i])){
+                alreadyDone[i] = results[i];
+                for (uint j = 0; j < election.votesIds.length; j++) {
+                    uint voteId = election.votesIds[j];
+                    if (results[i].winnerId == election.votes[voteId].participantOne && results[i].loserId == election.votes[voteId].participantTwo) {
+                        election.votes[voteId].countParticipantOne++;
+                    } else if (results[i].winnerId == election.votes[voteId].participantTwo && results[i].loserId == election.votes[voteId].participantOne) {
+                        election.votes[voteId].countParticipantTwo++;
+                    }
                 }
             }
         }
         election.voters[msg.sender].vote = true;
     }
+
+    function getAllElections() public view returns(ElectionDTO[] memory, ParticipantDTO[] memory){
+        ElectionDTO[] memory electionDTOs = new ElectionDTO[](elections.length);
+        ParticipantDTO[] memory participantDTOs = new ParticipantDTO[](1);        
+        for (uint i = 0; i < elections.length; i++) {
+            for (uint j = 0; j < elections[i].participantIds.length; j++) {
+                Participant memory participant = elections[i].participants[elections[i].participantIds[j]];
+                if(!elections[i].isOpen && !participant.validated) {
+                    continue;
+                }
+                participantDTOs[elections[i].participantIds[j]] = ParticipantDTO(i, participant.firstName, participant.lastName, participant.age, participant.imageUrl);
+            }
+            electionDTOs[i] = ElectionDTO(elections[i].title, elections[i].isRunning, elections[i].isOpen);
+        }
+        return (electionDTOs, participantDTOs);
+    }
+
+
 }
+
