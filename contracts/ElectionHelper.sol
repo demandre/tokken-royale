@@ -27,7 +27,7 @@ contract ElectionHelper is ElectionFactory {
     }
 
     function participateInElection(uint electionId, string calldata firstName, string calldata lastName, uint age, string calldata imageUrl) external {
-        Participant memory p = Participant(firstName, lastName, age, imageUrl, true, false);
+        Participant memory p = Participant(firstName, lastName, age, imageUrl, false);
         uint id = elections[electionId].participantIds.length;
         elections[electionId].participantIds.push(id);
         elections[electionId].participants[id] = p;
@@ -45,7 +45,7 @@ contract ElectionHelper is ElectionFactory {
     }
 
     function addParticipant(uint electionId, address participantAddress, string calldata firstName, string calldata lastName, uint age, string calldata imageUrl) external {
-        elections[electionId].participants[uint256(participantAddress)] = Participant(firstName, lastName, age, imageUrl, false, false);
+        elections[electionId].participants[uint256(participantAddress)] = Participant(firstName, lastName, age, imageUrl, false);
     }
 
     function addElection(string calldata title) external {
@@ -58,7 +58,7 @@ contract ElectionHelper is ElectionFactory {
         Fight[] memory alreadyDone = new Fight[](results.length);
         for (uint i = 0; i < results.length; i++) {
             // Vérifier si les candidats si candidats existent && si le fight a déjà été effectué pour ce vote
-            if(election.participants[results[i].loserId].active && election.participants[results[i].winnerId].active && !_checkFightPair(alreadyDone, results[i])){
+            if(election.participants[results[i].loserId].validated && election.participants[results[i].winnerId].validated && !_checkFightPair(alreadyDone, results[i])){
                 alreadyDone[i] = results[i];
                 for (uint j = 0; j < election.votesIds.length; j++) {
                     uint voteId = election.votesIds[j];
