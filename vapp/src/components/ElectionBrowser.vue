@@ -21,16 +21,45 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapGetters } from 'vuex';
+
+    const args = {
+        contractName: 'ElectionHelper',
+        method: 'getAllElections',
+        methodArgs: ''
+    };
 
     export default {
         name: 'ElectionBrowser',
-        props: {
-            elections: Object
+
+        computed: {...mapGetters('drizzle', ['drizzleInstance','isDrizzleInitialized']),
+            ...mapGetters("contracts", ["getContractData"]),
+            elections() {
+                let electionsData =  this.getContractData({
+                    contract: args.contractName,
+                    method: args.method
+                });
+                if(electionsData === "loading") {
+                    return [];
+                }
+                let elections = [];
+
+                electionsData[0].forEach(function(electionData){
+                    let election = [];
+                    election["title"] = electionData[0];
+                    election["isRunning"] = electionData[1];
+                    election["isOpen"] = electionData[2];
+                    election["previewPicture"] = "https://upload.wikimedia.org/wikipedia/fr/b/b8/Bob_l%27%C3%A9ponge_-_Logo.png";
+
+                    elections.push(election);
+                });
+                
+                return elections;
+            }
         },
 
-        computed: {
-            ...mapGetters('drizzle', ['isDrizzleInitialized']),
+        created() {
+            this.$store.dispatch('drizzle/REGISTER_CONTRACT', args);
         }
     }
 </script>

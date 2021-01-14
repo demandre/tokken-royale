@@ -1,6 +1,7 @@
 import SimpleStorage from './contracts/SimpleStorage.json'
 import ComplexStorage from './contracts/ComplexStorage.json'
 import TutorialToken from './contracts/TutorialToken.json'
+import ElectionHelper from './contracts/ElectionHelper'
 
 const options = {
   web3: {
@@ -13,7 +14,8 @@ const options = {
   contracts: [
       SimpleStorage,
       ComplexStorage,
-      TutorialToken
+      TutorialToken,
+      ElectionHelper
   ],
   events: {
     SimpleStorage: ['StorageSet']
