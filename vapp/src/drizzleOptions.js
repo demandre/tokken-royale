@@ -7,10 +7,14 @@ const options = {
     block: false,
     fallback: {
       type: 'ws',
-      url: 'ws://127.0.0.1:9545'
+      url: 'ws://127.0.0.1:7545'
     }
   },
-  contracts: [SimpleStorage, ComplexStorage, TutorialToken],
+  contracts: [
+      SimpleStorage,
+      ComplexStorage,
+      TutorialToken
+  ],
   events: {
     SimpleStorage: ['StorageSet']
   },
