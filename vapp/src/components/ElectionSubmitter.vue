@@ -4,16 +4,15 @@
         <form class="ui form container">
             <div class="field">
                 <label>Election title</label>
-                <input type="text" name="election-title" placeholder="Election title">
+                <input v-model="electionTitle" type="text" name="electionTitle" placeholder="Election title">
             </div>
             <div class="field">
                 <label>Election preview picture link</label>
-                <input type="text" name="election-preview-picture" placeholder="Election preview picture">
+                <input v-model="electionPreviewPicture" type="text" name="electionPreviewPicture" placeholder="Election preview picture">
             </div>
-            <button class="ui button" type="submit">Submit</button>
+            <button class="ui button" type="submit" @click.prevent="submitElection">Submit</button>
         </form>
     </div>
-
     <div v-else>Loading...</div>
 </template>
 
@@ -24,7 +23,25 @@
         name: 'ElectionSubmitter',
 
         computed: {
-            ...mapGetters('drizzle', ['isDrizzleInitialized']),
+            ...mapGetters('drizzle', ['isDrizzleInitialized', 'drizzleInstance']),
+        },
+
+        data() {
+            return {
+                electionTitle: null,
+                electionPreviewPicture: null
+            };
+        },
+
+        methods:{
+            submitElection: function (e) {
+                this.drizzleInstance
+                    .contracts['ElectionHelper']
+                    .methods['addElection']
+                    .cacheSend(this.electionTitle);
+
+                e.preventDefault();
+            }
         }
     }
 </script>
