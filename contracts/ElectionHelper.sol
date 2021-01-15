@@ -9,13 +9,14 @@ contract ElectionHelper is ElectionFactory {
         elections[electionId].isRunning = true;
         Election storage election = elections[electionId];
         for (uint i = 0; i < election.participantIds.length; i++) {
-            Vote memory vote = Vote(election.participantIds[i], 0, 0, 0);
             for (uint j = 0; j < election.participantIds.length; j++) {
                 if (i != j) {
-                    vote.participantTwo = election.participantIds[j];
                     uint id = elections[electionId].votesIds.length;
                     elections[electionId].votesIds.push(id);
-                    elections[electionId].votes[id] = vote;
+                    elections[electionId].votes[id].participantOne = election.participantIds[i];
+                    elections[electionId].votes[id].participantTwo = election.participantIds[j];
+                    elections[electionId].votes[id].countParticipantOne = 0;
+                    elections[electionId].votes[id].countParticipantTwo = 0;
                 }
             }
         }
@@ -40,7 +41,8 @@ contract ElectionHelper is ElectionFactory {
     }
 
     function addVoter(uint electionId, address voterAddress) external onlyOwnerOf(electionId) {
-        elections[electionId].voters[voterAddress] = VoterStatus(true, false);
+        elections[electionId].voters[voterAddress].canVote = true;
+        elections[electionId].voters[voterAddress].vote = false;
     }
 
     function addElection(string calldata title, string calldata imageUrl) external {
