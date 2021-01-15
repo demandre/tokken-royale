@@ -14,13 +14,13 @@ contract ElectionFactory is Ownable {
     }
 
     struct Fight {
-        uint winnerId;
-        uint loserId;
+        address winnerId;
+        address loserId;
     }
 
     struct Vote {
-        uint participantOne;
-        uint participantTwo;
+        address participantOne;
+        address participantTwo;
         uint countParticipantOne;
         uint countParticipantTwo;
     }
@@ -36,11 +36,11 @@ contract ElectionFactory is Ownable {
         bool isOpen;
         string imageUrl;
         address [] participantIds;
-        mapping(uint => Participant) participants;
+        mapping(address => Participant) participants;
         uint[] votesIds;
         mapping(uint => Vote) votes;
         mapping(address => VoterStatus) voters;
-        mapping(uint => uint) _voteCounts;
+        mapping(address => uint) _voteCounts;
     }
 
     struct ElectionDTO {
@@ -52,6 +52,7 @@ contract ElectionFactory is Ownable {
 
     struct ParticipantDTO{
         uint idElection;
+        address participantAddress;
         string firstName;
         string lastName;
         uint age;
@@ -104,10 +105,10 @@ contract ElectionFactory is Ownable {
         return false;
     }
 
-    function _stopTheCount(uint _electionId) internal returns (uint){
+    function _stopTheCount(uint _electionId) internal returns (address){
         Election storage election = elections[_electionId];
-        uint winner;
-        uint[] memory winners = new uint[](election.participantIds.length);
+        address winner;
+        address[] memory winners = new address[](election.participantIds.length);
         
         for (uint i = 0; i < election.votesIds.length; i++) {
             election._voteCounts[election.votes[i].countParticipantOne > election.votes[i].countParticipantOne ? election.votes[i].participantOne : election.votes[i].participantTwo]++;
@@ -153,6 +154,6 @@ contract ElectionFactory is Ownable {
                 }
             }
         }
-        return 0;
+        return address(0);
     }
 }

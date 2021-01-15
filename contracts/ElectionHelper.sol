@@ -36,8 +36,7 @@ contract ElectionHelper is ElectionFactory {
     }
 
     function validateParticipant(uint electionId, address participantAddress) external onlyOwnerOf(electionId) {
-        uint id = elections[electionId].addressToParticipant[participantAddress];
-        elections[electionId].participants[id].validated = true;
+        elections[electionId].participants[participantAddress].validated = true;
     }
 
     function addVoter(uint electionId, address voterAddress) external onlyOwnerOf(electionId) {
@@ -72,14 +71,15 @@ contract ElectionHelper is ElectionFactory {
 
     function getAllElections() public view returns(ElectionDTO[] memory, ParticipantDTO[] memory){
         ElectionDTO[] memory electionDTOs = new ElectionDTO[](elections.length);
-        ParticipantDTO[] memory participantDTOs = new ParticipantDTO[](1);        
+        ParticipantDTO[] memory participantDTOs = new ParticipantDTO[](0);
         for (uint i = 0; i < elections.length; i++) {
             for (uint j = 0; j < elections[i].participantIds.length; j++) {
                 Participant memory participant = elections[i].participants[elections[i].participantIds[j]];
                 if(!elections[i].isOpen && !participant.validated) {
                     continue;
                 }
-                participantDTOs[elections[i].participantIds[j]] = ParticipantDTO(i, participant.firstName, participant.lastName, participant.age, participant.imageUrl);
+
+                participantDTOs[participantDTOs.length] = ParticipantDTO(i, elections[i].participantIds[j], participant.firstName, participant.lastName, participant.age, participant.imageUrl);
             }
             electionDTOs[i] = ElectionDTO(elections[i].title, elections[i].isRunning, elections[i].isOpen, elections[i].imageUrl);
         }
