@@ -34,6 +34,7 @@ contract ElectionFactory is Ownable {
         string title;
         bool isRunning;
         bool isOpen;
+        string imageUrl;
         uint[] participantIds;
         mapping(uint => Participant) participants;
         uint[] votesIds;
@@ -47,6 +48,7 @@ contract ElectionFactory is Ownable {
         string title;
         bool isRunning;
         bool isOpen;
+        string imageUrl;
     }
 
     struct ParticipantDTO{
@@ -76,12 +78,13 @@ contract ElectionFactory is Ownable {
         _;
     }
 
-    function _createElection(string memory _title) internal {
+    function _createElection(string memory _title, string memory _imageUrl) internal {
         uint id = elections.push(
             Election(
                 _title,
                 false,
                 true,
+                _imageUrl,
                 new uint[](0),
                 new uint[](0)
             )

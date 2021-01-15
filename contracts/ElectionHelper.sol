@@ -27,7 +27,7 @@ contract ElectionHelper is ElectionFactory {
     }
 
     function participateInElection(uint electionId, string calldata firstName, string calldata lastName, uint age, string calldata imageUrl) external {
-    Participant memory p = Participant(firstName, lastName, age, imageUrl, false);
+        Participant memory p = Participant(firstName, lastName, age, imageUrl, false);
         uint id = elections[electionId].participantIds.length;
         /** TODO : use caller account address as id **/
         elections[electionId].participantIds.push(id);
@@ -51,8 +51,8 @@ contract ElectionHelper is ElectionFactory {
         elections[electionId].participants[uint256(participantAddress)] = Participant(firstName, lastName, age, imageUrl, false);
     }
 
-    function addElection(string calldata title) external {
-        _createElection(title);
+    function addElection(string calldata title, string calldata imageUrl) external {
+        _createElection(title, imageUrl);
     }
 
     function vote(uint electionId, Fight[] calldata results) external onlyVoterOf(electionId) hasNotVoted(electionId) {
@@ -87,7 +87,7 @@ contract ElectionHelper is ElectionFactory {
                 }
                 participantDTOs[elections[i].participantIds[j]] = ParticipantDTO(i, participant.firstName, participant.lastName, participant.age, participant.imageUrl);
             }
-            electionDTOs[i] = ElectionDTO(elections[i].title, elections[i].isRunning, elections[i].isOpen);
+            electionDTOs[i] = ElectionDTO(elections[i].title, elections[i].isRunning, elections[i].isOpen, elections[i].imageUrl);
         }
         return (electionDTOs, participantDTOs);
     }
