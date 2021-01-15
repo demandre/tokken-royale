@@ -35,12 +35,11 @@ contract ElectionFactory is Ownable {
         bool isRunning;
         bool isOpen;
         string imageUrl;
-        uint[] participantIds;
+        address [] participantIds;
         mapping(uint => Participant) participants;
         uint[] votesIds;
         mapping(uint => Vote) votes;
         mapping(address => VoterStatus) voters;
-        mapping(address => uint) addressToParticipant;
         mapping(uint => uint) _voteCounts;
     }
 
@@ -85,7 +84,7 @@ contract ElectionFactory is Ownable {
                 false,
                 true,
                 _imageUrl,
-                new uint[](0),
+                new address[](0),
                 new uint[](0)
             )
         ) - 1;

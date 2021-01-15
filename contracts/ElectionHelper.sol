@@ -27,14 +27,11 @@ contract ElectionHelper is ElectionFactory {
     }
 
     function participateInElection(uint electionId, string calldata firstName, string calldata lastName, uint age, string calldata imageUrl) external {
-        Participant memory p = Participant(firstName, lastName, age, imageUrl, false);
-        uint id = elections[electionId].participantIds.length;
-        /** TODO : use caller account address as id **/
-        elections[electionId].participantIds.push(id);
-        /** TODO : fix adding to participant map **/
-        elections[electionId].participants[id] = p;
-
-        elections[electionId].addressToParticipant[msg.sender] = id;
+        elections[electionId].participantIds.push(msg.sender);
+        elections[electionId].participants[msg.sender].firstName = firstName;
+        elections[electionId].participants[msg.sender].lastName = lastName;
+        elections[electionId].participants[msg.sender].age = age;
+        elections[electionId].participants[msg.sender].validated = false;
     }
 
     function validateParticipant(uint electionId, address participantAddress) external onlyOwnerOf(electionId) {
@@ -44,11 +41,6 @@ contract ElectionHelper is ElectionFactory {
 
     function addVoter(uint electionId, address voterAddress) external onlyOwnerOf(electionId) {
         elections[electionId].voters[voterAddress] = VoterStatus(true, false);
-    }
-
-    function addParticipant(uint electionId, address participantAddress, string calldata firstName, string calldata lastName, uint age, string calldata imageUrl) external {
-        /** TODO : remove (duplicate of participateInElection) **/
-        elections[electionId].participants[uint256(participantAddress)] = Participant(firstName, lastName, age, imageUrl, false);
     }
 
     function addElection(string calldata title, string calldata imageUrl) external {
