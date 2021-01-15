@@ -18,12 +18,11 @@
     import { mapGetters } from 'vuex'
     import ParticipantCard from "./ParticipantCard";
 
-
     export default {
         name: 'ElectionParticipants',
         components: {ParticipantCard},
         props: {
-            election: Object
+            election: Array
         },
 
         computed: {

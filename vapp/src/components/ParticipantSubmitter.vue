@@ -4,14 +4,21 @@
         <div v-if="election.isOpen">
             <form class="ui form container">
                 <div class="field">
-                    <label>Participant name</label>
-                    <input type="text" name="participant-name" placeholder="Participant name">
+                    <label>Participant name {{this.election['id']}}</label>
+                    <input type="text" v-model="firstName" name="firstName" placeholder="Participant first name">
                 </div>
                 <div class="field">
-                    <label>Participant avatar link</label>
-                    <input type="text" name="participant-avatar-link" placeholder="Participant avatar link">
+                    <input type="text" v-model="lastName" name="lastName" placeholder="Participant last name">
                 </div>
-                <button class="ui button" type="submit">Submit</button>
+                <div class="field">
+                    <label>Participant age</label>
+                    <input type="number" v-model="age" name="age" placeholder="21">
+                </div>
+                <div class="field">
+                    <label>Participant avatar url</label>
+                    <input type="text" v-model="avatarUrl" name="avatarUrl" placeholder="Participant avatar url">
+                </div>
+                <button class="ui button" @click.prevent="submitParticipant">Submit</button>
             </form>
         </div>
         <div v-else>
@@ -28,11 +35,39 @@
     export default {
         name: 'ParticipantSubmitter',
         props: {
-            election: Object
+            election: Array
         },
 
         computed: {
-            ...mapGetters('drizzle', ['isDrizzleInitialized']),
+            ...mapGetters('drizzle', ['isDrizzleInitialized', 'drizzleInstance', 'drizzleState']),
+        },
+
+        data() {
+            return {
+                firstName: null,
+                lastName: null,
+                age: null,
+                avatarUrl: null
+            };
+        },
+
+        methods:{
+            submitParticipant: function (e) {
+                //let accountAddress = this.drizzleInstance.store.getState().accounts[0];
+                /** TODO : fix adding to participant map in contract **/
+                this.drizzleInstance
+                    .contracts['ElectionHelper']
+                    .methods['participateInElection']
+                    .cacheSend(
+                            this.election['id'],
+                            this.firstName,
+                            this.lastName,
+                            this.age,
+                            this.avatarUrl
+                    );
+
+                e.preventDefault();
+            }
         }
     }
 </script>

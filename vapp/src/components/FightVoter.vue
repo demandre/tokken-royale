@@ -41,7 +41,7 @@
         name: 'FightVoter',
         components: {ParticipantCard},
         props: {
-            election: Object
+            election: Array
         },
 
         data() {
@@ -59,11 +59,11 @@
 
         methods: {
             generateFightsAndLaunchFirst: function () {
-                for (let i = 0; i < this.election.participants.length-1; i++) {
-                    for (let j = i+1; j < this.election.participants.length; j++) {
+                for (let i = 0; i < this.election['participants'].length-1; i++) {
+                    for (let j = i+1; j < this.election['participants'].length; j++) {
                         this.fights.push({
-                            participant1: this.election.participants[i],
-                            participant2: this.election.participants[j],
+                            participant1: this.election['participants'][i],
+                            participant2: this.election['participants'][j],
                         })
                     }
                 }

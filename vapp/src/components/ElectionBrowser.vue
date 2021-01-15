@@ -32,8 +32,10 @@
     export default {
         name: 'ElectionBrowser',
 
-        computed: {...mapGetters('drizzle', ['drizzleInstance','isDrizzleInitialized']),
+        computed: {
+            ...mapGetters('drizzle', ['drizzleInstance','isDrizzleInitialized']),
             ...mapGetters("contracts", ["getContractData"]),
+
             elections() {
                 let electionsData =  this.getContractData({
                     contract: args.contractName,
@@ -44,8 +46,9 @@
                 }
                 let elections = [];
 
-                electionsData[0].forEach(function(electionData){
+                electionsData[0].forEach(function(electionData, index){
                     let election = [];
+                    election["id"] = index;
                     election["title"] = electionData[0];
                     election["isRunning"] = electionData[1];
                     election["isOpen"] = electionData[2];
@@ -53,7 +56,7 @@
 
                     elections.push(election);
                 });
-                
+
                 return elections;
             }
         },
