@@ -1,8 +1,8 @@
 <template>
     <div v-if="isDrizzleInitialized" class="ui container">
         <h2 class="ui huge header block">PERFORM VOTE FIGHT</h2>
-        <div v-if="election['isCurrent']">
-            <router-link :to="{ name: 'fight', params: { election: election }}">
+        <div v-if="election.isRunning">
+            <router-link :to="{ name: 'fight', params: { election: election, participants: participants }}">
                 <button class="ui button red">FIGHT NOW</button>
             </router-link>
         </div>
@@ -20,7 +20,8 @@
     export default {
         name: 'FightLauncher',
         props: {
-            election: Array
+            election: Object,
+            participants: Array
         },
 
         computed: {

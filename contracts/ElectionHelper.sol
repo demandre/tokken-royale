@@ -28,11 +28,14 @@ contract ElectionHelper is ElectionFactory {
     }
 
     function participateInElection(uint electionId, string calldata firstName, string calldata lastName, uint age, string calldata imageUrl) external {
-        elections[electionId].participantIds.push(msg.sender);
-        elections[electionId].participants[msg.sender].firstName = firstName;
-        elections[electionId].participants[msg.sender].lastName = lastName;
-        elections[electionId].participants[msg.sender].age = age;
-        elections[electionId].participants[msg.sender].validated = false;
+        if(elections[electionId].participants[msg.sender].age == 0) {
+            elections[electionId].participantIds.push(msg.sender);
+            elections[electionId].participants[msg.sender].firstName = firstName;
+            elections[electionId].participants[msg.sender].lastName = lastName;
+            elections[electionId].participants[msg.sender].age = age;
+            elections[electionId].participants[msg.sender].imageUrl = imageUrl;
+            elections[electionId].participants[msg.sender].validated = false;
+        }
     }
 
     function validateParticipant(uint electionId, address participantAddress) external onlyOwnerOf(electionId) {
@@ -69,23 +72,37 @@ contract ElectionHelper is ElectionFactory {
         election.voters[msg.sender].vote = true;
     }
 
-    function getAllElections() public view returns(ElectionDTO[] memory, ParticipantDTO[] memory){
+    function getAllElections() public view returns(ElectionDTO[] memory){
         ElectionDTO[] memory electionDTOs = new ElectionDTO[](elections.length);
-        ParticipantDTO[] memory participantDTOs = new ParticipantDTO[](0);
-        for (uint i = 0; i < elections.length; i++) {
-            for (uint j = 0; j < elections[i].participantIds.length; j++) {
-                Participant memory participant = elections[i].participants[elections[i].participantIds[j]];
-                if(!elections[i].isOpen && !participant.validated) {
-                    continue;
-                }
 
-                participantDTOs[participantDTOs.length] = ParticipantDTO(i, elections[i].participantIds[j], participant.firstName, participant.lastName, participant.age, participant.imageUrl);
-            }
+        for (uint i = 0; i < elections.length; i++) {
             electionDTOs[i] = ElectionDTO(elections[i].title, elections[i].isRunning, elections[i].isOpen, elections[i].imageUrl);
         }
-        return (electionDTOs, participantDTOs);
+        return (electionDTOs);
     }
 
+    function getAllElectionParticipant(uint electionId) public view returns(ParticipantDTO[] memory){
+        Election memory election = elections[electionId];
 
+        if(election.participantIds.length == 0) {
+            return new ParticipantDTO[](0);
+        }
+        //if(!election.isOpen) {
+          //  return new ParticipantDTO[](0);
+        //}
+
+        ParticipantDTO[] memory participants = new ParticipantDTO[](election.participantIds.length);
+
+        for (uint i = 0; i < election.participantIds.length; i++) {
+            Participant memory participant = elections[electionId].participants[election.participantIds[i]];
+            //if (!participant.validated) {
+              //    continue;
+            //}
+
+            participants[i] = ParticipantDTO(electionId, election.participantIds[i], participant.firstName, participant.lastName, participant.age, participant.imageUrl);
+        }
+
+        return participants;
+    }
 }
 

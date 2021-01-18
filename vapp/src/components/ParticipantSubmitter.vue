@@ -35,7 +35,7 @@
     export default {
         name: 'ParticipantSubmitter',
         props: {
-            election: Array
+            election: Object
         },
 
         computed: {

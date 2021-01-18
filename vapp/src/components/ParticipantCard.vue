@@ -1,9 +1,9 @@
 <template>
     <div v-if="isDrizzleInitialized" class="ui container">
         <a class="ui card shadow" @mouseover="hoverCard(index)" @mouseout="hoverCard(-1)">
-            <img class="ui image" v-show="!isSelected(index)" v-bind:src="participant.avatar" v-bind:alt="participant.avatar">
+            <img class="ui image" v-show="!isSelected(index)" v-bind:src="participant.imageUrl" v-bind:alt="participant.lastName">
             <div class="ui container" v-show="isSelected(index)">
-                <h4 class="ui header block">{{ participant.name }}</h4>
+                <h4 class="ui header block">{{ participant.lastName }}</h4>
                 <span class="ui justify black text" >Le lorem ipsum est, en imprimerie,
                     une suite de mots sans signification utilisée à titre
                     provisoire pour calibrer une mise en page, le texte
@@ -13,7 +13,7 @@
                     le Lorem ipsum ou Lipsum.</span>
             </div>
             <div class="content" v-show="!isSelected(index)">
-                <span class="ui label">{{ participant.name }}</span>
+                <span class="ui label">{{ participant.lastName }}</span>
             </div>
         </a>
     </div>
@@ -28,7 +28,7 @@
         name: 'ParticipantCard',
         props: {
             participant: Object,
-            index: String
+            index: Number
         },
 
         computed: {

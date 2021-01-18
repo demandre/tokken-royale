@@ -41,18 +41,18 @@
                     contract: args.contractName,
                     method: args.method
                 });
-                if(electionsData === "loading") {
+                if(electionsData === "loading" || electionsData === "l" || electionsData === null || typeof electionsData === "undefined") {
                     return [];
                 }
                 let elections = [];
 
-                electionsData[0].forEach(function(electionData, index){
-                    let election = [];
-                    election["id"] = index;
-                    election["title"] = electionData[0];
-                    election["isRunning"] = electionData[1];
-                    election["isOpen"] = electionData[2];
-                    election["previewPicture"] = "https://upload.wikimedia.org/wikipedia/fr/b/b8/Bob_l%27%C3%A9ponge_-_Logo.png";
+                electionsData.forEach(function(electionData, index){
+                    let election = {};
+                    election.id = index;
+                    election.title = electionData[0];
+                    election.isRunning = electionData[1];
+                    election.isOpen = electionData[2];
+                    election.previewPicture = electionData[3];
 
                     elections.push(election);
                 });
