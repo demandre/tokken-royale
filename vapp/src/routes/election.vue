@@ -2,7 +2,7 @@
   <div class="ui container" v-if="isDrizzleInitialized">
     <ElectionParticipants v-bind:election="election" />
     <br/>
-    <FightLauncher v-bind:election="election" />
+    <ElectionVoteLauncher v-bind:election="election"  />
     <br/>
     <ParticipantSubmitter v-bind:election="election" />
   </div>
@@ -16,13 +16,13 @@
   import { mapGetters } from 'vuex'
   import ElectionParticipants from "../components/ElectionParticipants";
   import ParticipantSubmitter from "../components/ParticipantSubmitter";
-  import FightLauncher from "../components/FightLauncher";
+  import ElectionVoteLauncher from "../components/ElectionVoteLauncher";
 
   export default {
     name: 'election',
 
     components: {
-      FightLauncher,
+      ElectionVoteLauncher,
       ElectionParticipants,
       ParticipantSubmitter
     },
