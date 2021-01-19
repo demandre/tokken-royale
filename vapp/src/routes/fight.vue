@@ -1,6 +1,6 @@
 <template>
   <div class="ui container" v-if="isDrizzleInitialized">
-    <FightVoter v-bind:election="election" />
+    <FightVoter v-bind:election="election" v-bind:participants="participants"/>
   </div>
 
   <div v-else class="ui active dimmer">
@@ -24,8 +24,11 @@
 
       election() {
         return this.$route.params.election
-      }
+      },
 
+      participants() {
+        return this.$route.params.participants
+      }
 
     }
   }

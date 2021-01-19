@@ -59,6 +59,8 @@
                     participants.push(participant);
                 });
 
+                this.$emit('participantsUpdated', participants);
+
                 return participants;
             }
         },

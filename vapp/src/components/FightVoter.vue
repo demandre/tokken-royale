@@ -9,7 +9,7 @@
                     <button v-if="currentFight !== false"
                             class="ui button blue centered huge"
                             @click="voteFight(currentFight.participant1, currentFight.participant2)">
-                        {{currentFight.participant1.name}}
+                        {{currentFight.participant1.firstName}}
                     </button>
                 </div>
                 <div class=" column">
@@ -21,7 +21,7 @@
                     <button v-if="currentFight !== false"
                             class="ui button blue centered huge"
                             @click="voteFight(currentFight.participant2, currentFight.participant1)">
-                        {{currentFight.participant2.name}}
+                        {{currentFight.participant2.firstName}}
                     </button>
                 </div>
                 <button class="ui button blue huge centered" @click="generateFightsAndLaunchFirst()" v-if="currentFight === false && !finished">FIGHT !!!!!!</button>
@@ -61,7 +61,14 @@
         methods: {
             generateFightsAndLaunchFirst: function () {
                 for (let i = 0; i < this.participants.length-1; i++) {
+                    if (!this.participants[i].validated) {
+                        continue;
+                    }
+
                     for (let j = i+1; j < this.participants.length; j++) {
+                        if (!this.participants[j].validated) {
+                            continue;
+                        }
                         this.fights.push({
                             participant1: this.participants[i],
                             participant2: this.participants[j],
@@ -82,8 +89,8 @@
             },
             voteFight: function (winner, loser) {
                 this.votes.push({
-                    winnerId: winner.name,
-                    loserId: loser.name
+                    winnerId: winner.participantAddress,
+                    loserId: loser.participantAddress
                 });
                 this.launchNextFight();
             },

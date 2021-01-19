@@ -1,9 +1,9 @@
 <template>
   <div class="ui container" v-if="isDrizzleInitialized">
-    <ElectionParticipants v-bind:election="election" />
+    <ElectionParticipants v-bind:election="election" v-on:participantsUpdated="updateParticipants"/>
     <br/>
-    <ElectionVoteLauncher v-bind:election="election"  />
-    <br/>
+    <ElectionVoteLauncher v-bind:election="election" v-bind:participants="participants" />
+    <br />
     <ParticipantSubmitter v-bind:election="election" />
   </div>
 
@@ -21,6 +21,12 @@
   export default {
     name: 'election',
 
+    data() {
+      return {
+        participantsArray: []
+      }
+    },
+
     components: {
       ElectionVoteLauncher,
       ElectionParticipants,
@@ -31,10 +37,19 @@
       ...mapGetters('drizzle', ['isDrizzleInitialized']),
 
       election() {
-        return this.$route.params.election
+        return this.$route.params.election;
+      },
+
+      participants() {
+        return this.participantsArray;
       }
 
+    },
 
+    methods: {
+      updateParticipants(participants) {
+        this.participantsArray = participants;
+      }
     }
   }
 </script>
