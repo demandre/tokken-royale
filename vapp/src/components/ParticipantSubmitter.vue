@@ -4,7 +4,7 @@
         <div v-if="election.isOpen">
             <form class="ui form container">
                 <div class="field">
-                    <label>Participant name {{this.election['id']}}</label>
+                    <label>Participant name</label>
                     <input type="text" v-model="firstName" name="firstName" placeholder="Participant first name">
                 </div>
                 <div class="field">

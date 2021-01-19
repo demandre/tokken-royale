@@ -7,6 +7,7 @@ contract ElectionHelper is ElectionFactory {
     function startElection(uint electionId) external onlyOwnerOf(electionId) {
         require(elections[electionId].isRunning == false);
         elections[electionId].isRunning = true;
+        elections[electionId].isOpen = false;
         Election storage election = elections[electionId];
         for (uint i = 0; i < election.participantIds.length; i++) {
             for (uint j = 0; j < election.participantIds.length; j++) {
@@ -99,7 +100,7 @@ contract ElectionHelper is ElectionFactory {
               //    continue;
             //}
 
-            participants[i] = ParticipantDTO(electionId, election.participantIds[i], participant.firstName, participant.lastName, participant.age, participant.imageUrl);
+            participants[i] = ParticipantDTO(electionId, election.participantIds[i], participant.firstName, participant.lastName, participant.age, participant.imageUrl, participant.validated);
         }
 
         return participants;

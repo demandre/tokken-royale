@@ -57,6 +57,7 @@ contract ElectionFactory is Ownable {
         string lastName;
         uint age;
         string imageUrl;
+        bool validated;
     }
 
     Election[] public elections;

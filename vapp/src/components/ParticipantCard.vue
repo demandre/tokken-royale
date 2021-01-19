@@ -14,8 +14,12 @@
             </div>
             <div class="content" v-show="!isSelected(index)">
                 <span class="ui label">{{ participant.lastName }}</span>
+                <span class="ui label green" v-show="participant.validated">validated</span>
             </div>
         </a>
+        <div class="content" v-show="!participant.validated">
+            <button @click="validateParticipant" class="ui button green">Validate</button>
+        </div>
     </div>
 
     <div v-else>Loading...</div>
@@ -32,7 +36,7 @@
         },
 
         computed: {
-            ...mapGetters('drizzle', ['isDrizzleInitialized']),
+            ...mapGetters('drizzle', ['isDrizzleInitialized', 'drizzleInstance']),
         },
 
         data() {
@@ -47,6 +51,17 @@
             },
             isSelected (cardIndex) {
                 return this.selectedCard === cardIndex
+            },
+            validateParticipant: function (e) {
+                this.drizzleInstance
+                    .contracts['ElectionHelper']
+                    .methods['validateParticipant']
+                    .cacheSend(
+                        this.participant.electionId,
+                        this.participant.participantAddress
+                    );
+
+                e.preventDefault();
             }
         }
     }

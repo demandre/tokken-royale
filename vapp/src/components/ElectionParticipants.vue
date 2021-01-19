@@ -54,6 +54,7 @@
                     participant.lastName = participantData[3];
                     participant.age = participantData[4];
                     participant.imageUrl = participantData[5];
+                    participant.validated = participantData[6];
 
                     participants.push(participant);
                 });
