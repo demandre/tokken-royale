@@ -4,6 +4,7 @@
         <div v-if="election.isRunning">
             <router-link :to="{ name: 'fight', params: { election: election, participants: participants }}">
                 <button class="ui button green">FIGHT NOW</button>
+                <button class="ui button red" @click="stopElection">STOP ELECTION</button>
             </router-link>
         </div>
         <div v-else>
@@ -34,6 +35,17 @@
                 this.drizzleInstance
                     .contracts['ElectionHelper']
                     .methods['startElection']
+                    .cacheSend(
+                        this.election.id,
+                    );
+
+                e.preventDefault();
+            },
+
+            stopElection: function (e) {
+                this.drizzleInstance
+                    .contracts['ElectionHelper']
+                    .methods['stopElection']
                     .cacheSend(
                         this.election.id,
                     );

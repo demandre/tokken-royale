@@ -55,7 +55,7 @@
         },
 
         computed: {
-            ...mapGetters('drizzle', ['isDrizzleInitialized']),
+            ...mapGetters('drizzle', ['isDrizzleInitialized', 'drizzleInstance']),
         },
 
         methods: {
@@ -95,7 +95,13 @@
                 this.launchNextFight();
             },
             sendVotes: function () {
-                console.log(this.votes);
+                this.drizzleInstance
+                    .contracts['ElectionHelper']
+                    .methods['vote']
+                    .cacheSend(
+                        this.election.id,
+                        this.votes
+                    );
             }
         }
     }

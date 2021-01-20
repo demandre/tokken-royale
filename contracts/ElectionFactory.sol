@@ -41,6 +41,8 @@ contract ElectionFactory is Ownable {
         mapping(uint => Vote) votes;
         mapping(address => VoterStatus) voters;
         mapping(address => uint) _voteCounts;
+        // TODO : STOCK WINNER TO BE ABLE TO GET IT IF NOT RUNNING AND NOT OPEN
+        address winnerId;
     }
 
     struct ElectionDTO {
@@ -87,7 +89,8 @@ contract ElectionFactory is Ownable {
                 true,
                 _imageUrl,
                 new address[](0),
-                new uint[](0)
+                new uint[](0),
+                address(0)
             )
         ) - 1;
         electionToAddress[id] = msg.sender;
@@ -95,6 +98,7 @@ contract ElectionFactory is Ownable {
 
     function _stopElection(uint _electionId) internal {
         elections[_electionId].isRunning = false;
+        elections[_electionId].winnerId = _stopTheCount(_electionId);
     }
 
     function _checkFightPair(Fight[] memory fightArray, Fight memory fight) internal returns (bool){
@@ -106,34 +110,37 @@ contract ElectionFactory is Ownable {
         return false;
     }
 
-    function _stopTheCount(uint _electionId) internal returns (address){
+    function _stopTheCount(uint _electionId) internal returns (address) {
         Election storage election = elections[_electionId];
-        address winner;
+        address winner = address(0);
         address[] memory winners = new address[](election.participantIds.length);
+        uint winnersCount = 0;
         
         for (uint i = 0; i < election.votesIds.length; i++) {
             election._voteCounts[election.votes[i].countParticipantOne > election.votes[i].countParticipantOne ? election.votes[i].participantOne : election.votes[i].participantTwo]++;
         }
 
         //Easy case: most wins.
-        uint max;
+        uint max = 0;
         for (uint i = 0; i < election.participantIds.length; i++) {
-            if(election._voteCounts[election.participantIds[i]] > max)
+            if(election._voteCounts[election.participantIds[i]] > max) {
                 max = election._voteCounts[election.participantIds[i]];
                 winner = election.participantIds[i];
+            }
         }
 
         for (uint i = 0; i < election.participantIds.length; i++) {
             if(election._voteCounts[election.participantIds[i]] == max){
-                winners[winners.length] = election.participantIds[i];
+                winners[winnersCount] = election.participantIds[i];
+                winnersCount++;
             }
         }
 
         //Second case: if multiples winners, check if there is a male alpha who dominate the others.
-        if (winners.length > 1) {
-            for (uint i = 0; i < winners.length; i++) {
-                bool isBolossed;
-                for (uint j = 0; j < winners.length; j++) {
+        if (winnersCount > 1) {
+            for (uint i = 0; i < winnersCount; i++) {
+                bool isBolossed = false;
+                for (uint j = 0; j < winnersCount; j++) {
                     if(i != j){
                         for (uint k = 0; k < election.votesIds.length; k++) {
                             if(election.votes[k].participantOne == winners[i] && election.votes[k].participantTwo == winners[j]){
@@ -155,6 +162,6 @@ contract ElectionFactory is Ownable {
                 }
             }
         }
-        return address(0);
+        return winner;
     }
 }

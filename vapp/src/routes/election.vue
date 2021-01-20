@@ -1,10 +1,15 @@
 <template>
   <div class="ui container" v-if="isDrizzleInitialized">
-    <ElectionParticipants v-bind:election="election" v-on:participantsUpdated="updateParticipants"/>
-    <br/>
-    <ElectionVoteLauncher v-bind:election="election" v-bind:participants="participants" />
-    <br />
-    <ParticipantSubmitter v-bind:election="election" />
+    <div v-if="election.isRunning || election.isOpen">
+      <ElectionParticipants v-bind:election="election"  v-on:participantsUpdated="updateParticipants"/>
+      <br/>
+      <ElectionVoteLauncher v-bind:election="election" v-bind:participants="participants" />
+      <br />
+      <ParticipantSubmitter v-bind:election="election" />
+    </div>
+    <div v-else>
+      <ElectionWinner v-bind:election="election"/>
+    </div>
   </div>
 
   <div v-else class="ui active dimmer">
@@ -17,6 +22,7 @@
   import ElectionParticipants from "../components/ElectionParticipants";
   import ParticipantSubmitter from "../components/ParticipantSubmitter";
   import ElectionVoteLauncher from "../components/ElectionVoteLauncher";
+  import ElectionWinner from "../components/ElectionWinner";
 
   export default {
     name: 'election',
@@ -30,7 +36,8 @@
     components: {
       ElectionVoteLauncher,
       ElectionParticipants,
-      ParticipantSubmitter
+      ParticipantSubmitter,
+      ElectionWinner
     },
 
     computed: {
