@@ -6,12 +6,14 @@ import "./ElectionFactory.sol";
 contract ElectionHelper is ElectionFactory {
     function startElection(uint electionId) external onlyOwnerOf(electionId) {
         require(elections[electionId].isRunning == false);
+
         elections[electionId].isRunning = true;
         elections[electionId].isOpen = false;
         for (uint i = 0; i < elections[electionId].participantIds.length; i++) {
             for (uint j = 0; j < elections[electionId].participantIds.length; j++) {
                 if (i != j) {
                     uint id = elections[electionId].votesIds.length;
+
                     elections[electionId].votesIds.push(id);
                     elections[electionId].votes[id].participantOne = elections[electionId].participantIds[i];
                     elections[electionId].votes[id].participantTwo = elections[electionId].participantIds[j];
@@ -53,12 +55,14 @@ contract ElectionHelper is ElectionFactory {
 
     function vote(uint electionId, Fight[] calldata results) external {
         Fight[] memory alreadyDone = new Fight[](results.length);
+
         for (uint i = 0; i < results.length; i++) {
             // Vérifier si les candidats si candidats existent && si le fight a déjà été effectué pour ce vote
             if(elections[electionId].participants[results[i].loserId].validated && elections[electionId].participants[results[i].winnerId].validated && !_checkFightPair(alreadyDone, results[i])){
                 alreadyDone[i] = results[i];
                 for (uint j = 0; j < elections[electionId].votesIds.length; j++) {
                     uint voteId = elections[electionId].votesIds[j];
+
                     if (results[i].winnerId == elections[electionId].votes[voteId].participantOne && results[i].loserId == elections[electionId].votes[voteId].participantTwo) {
                         elections[electionId].votes[voteId].countParticipantOne++;
                     } else if (results[i].winnerId == elections[electionId].votes[voteId].participantTwo && results[i].loserId == elections[electionId].votes[voteId].participantOne) {
@@ -85,7 +89,6 @@ contract ElectionHelper is ElectionFactory {
         if(election.participantIds.length == 0) {
             return new ParticipantDTO[](0);
         }
-
         ParticipantDTO[] memory participants = new ParticipantDTO[](election.participantIds.length);
 
         for (uint i = 0; i < election.participantIds.length; i++) {
@@ -93,12 +96,12 @@ contract ElectionHelper is ElectionFactory {
 
             participants[i] = ParticipantDTO(electionId, election.participantIds[i], participant.firstName, participant.lastName, participant.age, participant.imageUrl, participant.validated);
         }
-
         return participants;
     }
 
     function getElectionWinner(uint electionId) public view returns(ParticipantDTO memory) {
         require(elections[electionId].isRunning == false && elections[electionId].isOpen == false);
+
         Election memory election = elections[electionId];
         Participant memory participant = elections[electionId].participants[election.winnerId];
         return ParticipantDTO(electionId, election.winnerId, participant.firstName, participant.lastName, participant.age, participant.imageUrl, participant.validated);

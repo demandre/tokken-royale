@@ -41,7 +41,6 @@ contract ElectionFactory is Ownable {
         mapping(uint => Vote) votes;
         mapping(address => VoterStatus) voters;
         mapping(address => uint) _voteCounts;
-        // TODO : STOCK WINNER TO BE ABLE TO GET IT IF NOT RUNNING AND NOT OPEN
         address winnerId;
     }
 
