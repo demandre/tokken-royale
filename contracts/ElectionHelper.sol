@@ -42,6 +42,9 @@ contract ElectionHelper is ElectionFactory {
 
     function validateParticipant(uint electionId, address participantAddress) external onlyOwnerOf(electionId) {
         elections[electionId].participants[participantAddress].validated = true;
+        // Also add to voters
+        elections[electionId].voters[participantAddress].canVote = true;
+        elections[electionId].voters[participantAddress].vote = false;
     }
 
     function addVoter(uint electionId, address voterAddress) external onlyOwnerOf(electionId) {
@@ -54,6 +57,9 @@ contract ElectionHelper is ElectionFactory {
     }
 
     function vote(uint electionId, Fight[] calldata results) external {
+        require(elections[electionId].voters[msg.sender].canVote == true);
+        require(elections[electionId].voters[msg.sender].vote == false);
+
         Fight[] memory alreadyDone = new Fight[](results.length);
 
         for (uint i = 0; i < results.length; i++) {

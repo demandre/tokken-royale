@@ -6,6 +6,8 @@
       <ElectionVoteLauncher v-bind:election="election" v-bind:participants="participants" />
       <br />
       <ParticipantSubmitter v-bind:election="election" />
+      <br />
+      <VoterSubmitter v-bind:election="election" />
     </div>
     <div v-else>
       <ElectionWinner v-bind:election="election"/>
@@ -23,6 +25,7 @@
   import ParticipantSubmitter from "../components/ParticipantSubmitter";
   import ElectionVoteLauncher from "../components/ElectionVoteLauncher";
   import ElectionWinner from "../components/ElectionWinner";
+  import VoterSubmitter from "../components/VoterSubmitter";
 
   export default {
     name: 'election',
@@ -34,6 +37,7 @@
     },
 
     components: {
+      VoterSubmitter,
       ElectionVoteLauncher,
       ElectionParticipants,
       ParticipantSubmitter,

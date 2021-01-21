@@ -53,8 +53,6 @@
 
         methods:{
             submitParticipant: function (e) {
-                //let accountAddress = this.drizzleInstance.store.getState().accounts[0];
-                /** TODO : fix adding to participant map in contract **/
                 this.drizzleInstance
                     .contracts['ElectionHelper']
                     .methods['participateInElection']
