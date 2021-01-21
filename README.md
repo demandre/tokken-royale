@@ -30,7 +30,7 @@ npm run serve
 #### Name of the network
 LocalTruffle
 #### New URL of RPC
-http://127.0.0.1:9545/
+http://127.0.0.1:7545/
 #### ID of the chain
 Type anything, and on submit it will show you the good one.
 
