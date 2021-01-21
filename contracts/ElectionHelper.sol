@@ -31,13 +31,15 @@ contract ElectionHelper is ElectionFactory {
 
     function participateInElection(uint electionId, string calldata firstName, string calldata lastName, uint age, string calldata imageUrl) external {
         if(elections[electionId].participants[msg.sender].age == 0) {
+            // Can only participate once in an election
             elections[electionId].participantIds.push(msg.sender);
-            elections[electionId].participants[msg.sender].firstName = firstName;
-            elections[electionId].participants[msg.sender].lastName = lastName;
-            elections[electionId].participants[msg.sender].age = age;
-            elections[electionId].participants[msg.sender].imageUrl = imageUrl;
-            elections[electionId].participants[msg.sender].validated = false;
         }
+        // But can update its information
+        elections[electionId].participants[msg.sender].firstName = firstName;
+        elections[electionId].participants[msg.sender].lastName = lastName;
+        elections[electionId].participants[msg.sender].age = age;
+        elections[electionId].participants[msg.sender].imageUrl = imageUrl;
+        elections[electionId].participants[msg.sender].validated = false;
     }
 
     function validateParticipant(uint electionId, address participantAddress) external onlyOwnerOf(electionId) {
